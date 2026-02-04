@@ -1,16 +1,23 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import SumaVydavkov from "./SumaVydavkov";
 import ZoznamVydavkov from "./ZoznamVydavkov";
-
+import FiltraciaVydavkov from "./FiltraciaVydavkov";
 import { GlobalStyles } from "../constant/styles";
-import { VydavkyContext } from "../store/vydavky-context";
+
 
 export default function ZobrazenieVydavkov({ vydavky, pocetDniVydavkov }) {
+  const [vyfiltrovaneVydavky, setVyfiltrovaneVydavky] = useState(vydavky);
+
+  function handleFilter(filtrovaneVydavky) {
+    setVyfiltrovaneVydavky(filtrovaneVydavky);
+  }
+
   return (
     <View style={styles.container}>
-      <SumaVydavkov vydavky={vydavky} pocetDni={pocetDniVydavkov} />
-      <ZoznamVydavkov vydavky={vydavky} />
+      <SumaVydavkov vydavky={vyfiltrovaneVydavky} pocetDni={pocetDniVydavkov} />
+      <FiltraciaVydavkov vydavky={vydavky} onFilter={handleFilter} />
+      <ZoznamVydavkov vydavky={vyfiltrovaneVydavky} />
     </View>
   );
 }
